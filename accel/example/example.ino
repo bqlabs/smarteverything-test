@@ -6,9 +6,10 @@
 #include <Wire.h>
 #include <LSM9DS1.h>
 
-#define A_THRESHOLD 1300
-#define A_EPSILON   50
-#define T_EPSILON   40
+#define A_THRESHOLD  1500
+#define A_EPSILON    50
+#define T_EPSILON    40
+#define Z_THRESHOLD  800
 
 int state = -1;
 // 0: initial state
@@ -129,8 +130,9 @@ void loop() {
       g1x = smeAccelerometer.readX();
       g1y = smeAccelerometer.readY();
       g1z = smeAccelerometer.readZ();
-      SerialUSB.println(theta());
-      if (abs(abs(theta()) - 90) <= T_EPSILON) {
+      SerialUSB.println(abs(g1z));
+      //if (abs(abs(theta()) - 90) <= T_EPSILON) {
+      if (abs(g1z) >= Z_THRESHOLD) {
         SerialUSB.println("FALL");
         ledRedLight(HIGH);
         ledBlueLight(LOW);
